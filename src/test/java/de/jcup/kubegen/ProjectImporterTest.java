@@ -1,7 +1,6 @@
 package de.jcup.kubegen;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.util.List;
@@ -59,7 +58,6 @@ public class ProjectImporterTest {
 		File templatesFolder = new File(testroot1, "name1/templates");
 		assertEquals(templatesFolder, project.getTemplateFolder());
 		assertEquals(4,project.getTemplateFolder().listFiles().length);
-		assertEquals(4,project.getTemplateFiles().size());
 	}
 	
 	@Test

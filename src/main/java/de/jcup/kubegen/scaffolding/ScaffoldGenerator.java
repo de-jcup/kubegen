@@ -1,11 +1,13 @@
-package de.jcup.kubegen;
+package de.jcup.kubegen.scaffolding;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SkeletonGenerator {
+import de.jcup.kubegen.Project;
+
+public class ScaffoldGenerator {
 
 	public void generate(Project project) throws IOException {
 
@@ -24,7 +26,7 @@ public class SkeletonGenerator {
 		list.add("pods");
 		list.add("services");
 		list.add("nodeports");
-		list.add("deployment");
+		list.add("deployments");
 
 		int index = 0;
 		for (String name : list) {
@@ -39,6 +41,7 @@ public class SkeletonGenerator {
 			sb.append(".yaml");
 			new File(project.getTemplateFolder(),sb.toString()).createNewFile();
 		}
+		new File(project.getTemplateFolder(),"custom_install.sh").createNewFile();
 	}
 
 }

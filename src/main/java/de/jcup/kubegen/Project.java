@@ -2,7 +2,6 @@ package de.jcup.kubegen;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,10 +50,6 @@ public class Project {
 		return new File(getValuesFolder(),"values_"+environment+".properties");
 	}
 
-	public List<File> getTemplateFiles() {
-		return Arrays.asList(getTemplateFolder().listFiles());
-	}
-
 	public String getValue(String key) {
 		return getValue(null,key);
 	}
@@ -87,7 +82,9 @@ public class Project {
 	public Set<String> getCommonAndEnvKeys(String environment) {
 		Set<String> set = new TreeSet<>();
 		set.addAll(map.get("").keySet());
-		set.addAll(map.get(environment).keySet());
+		if (environment!=null && !environment.isEmpty()){
+			set.addAll(map.get(environment).keySet());
+		}
 		return set;
 	}
 

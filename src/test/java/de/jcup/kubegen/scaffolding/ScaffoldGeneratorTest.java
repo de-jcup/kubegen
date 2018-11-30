@@ -1,7 +1,6 @@
-package de.jcup.kubegen;
+package de.jcup.kubegen.scaffolding;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -11,13 +10,16 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SkeletonGeneratorTest {
+import de.jcup.kubegen.Project;
+import de.jcup.kubegen.ProjectImporter;
 
-	private SkeletonGenerator generatorToTest;
+public class ScaffoldGeneratorTest {
+
+	private ScaffoldGenerator generatorToTest;
 
 	@Before
 	public void before() {
-		generatorToTest=new SkeletonGenerator();
+		generatorToTest=new ScaffoldGenerator();
 	}
 	
 	@Test
