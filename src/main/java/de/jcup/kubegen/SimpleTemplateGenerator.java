@@ -22,10 +22,13 @@ public class SimpleTemplateGenerator {
 			StringBuilder sb = new StringBuilder();
 			c.lineNr=0;
 			while ((line=br.readLine())!=null) {
+			    boolean firstLine = c.lineNr==0;
+			    if (!firstLine){
+			        sb.append("\n");
+			    }
 				c.lineNr++;
 				String newLine = replacePlaceHolders(line,c);
 				sb.append(newLine);
-				sb.append("\n");
 			}
 			fw.write(sb.toString());
 			
