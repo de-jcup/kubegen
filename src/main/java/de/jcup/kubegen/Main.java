@@ -39,17 +39,17 @@ public class Main {
 			execute(jc);
 		} catch (Exception e) {
 			System.err.println("> Execution failed:" + e.getMessage());
-			if (config.verbose){
+			if (config.verbose) {
 				e.printStackTrace();
 			}
 			System.exit(1);
 		}
 	}
 
-	protected void execute(JCommander jc) throws  Exception {
+	protected void execute(JCommander jc) throws Exception {
 		String cmd = jc.getParsedCommand();
-		if (cmd==null){
-			if (config.showVersion){
+		if (cmd == null) {
+			if (config.showVersion) {
 				System.out.println("kubegen 0.2.0");
 				return;
 			}
@@ -69,13 +69,13 @@ public class Main {
 		case "create":
 			Project newProject = new Project(new File("."), scaffoldCommand.projectName);
 			newProject.getEnvironments().addAll(scaffoldCommand.environments);
-			
+
 			ScaffoldGenerator scaffoldGenerator = new ScaffoldGenerator();
 			scaffoldGenerator.generate(newProject);
 			break;
 		default:
-			if (config.verbose){
-				System.out.println("not able to handle command:"+cmd);
+			if (config.verbose) {
+				System.out.println("not able to handle command:" + cmd);
 			}
 			jc.usage();
 		}
