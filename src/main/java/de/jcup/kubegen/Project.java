@@ -87,12 +87,8 @@ public class Project {
 		Set<String> set = new TreeSet<>();
 		set.addAll(map.get("").keySet());
 		if (environment != null && !environment.isEmpty()) {
-			Map<String, String> envMap = map.get(environment);
-			if (envMap != null) {
-				set.addAll(envMap.keySet());
-			} else {
-				LOG.warn("Did not found environment map for '{}' so ignored", environment);
-			}
+			Map<String, String> envMap = map.computeIfAbsent(environment, e -> new HashMap<>());
+			set.addAll(envMap.keySet());
 		}
 		return set;
 	}
