@@ -10,7 +10,8 @@ Structure:
 
 ----
 ```
-myproject
+projects
+   myproject1
      templates
         01_initial
            01_config_maps.yaml
@@ -26,9 +27,20 @@ myproject
         values.properties
         values_dev.properties
         values_prod.properties
+  myproject2
+      templates
+         01_do_it.yaml
+  values
+     values.properties
+     values_int.properties
+   
 ```
 
-Environments are automatically resolved by inspected value_$xxx.properties 
+Environments are automatically resolved by inspected value_$xxx.properties. Folder `values` - if existing -  in project parent folder is provided to
+any project. So there can be a shared setup provided. If project has no own `values` folder only parent folder environments are used. Otherwise 
+data will be merged but project does override.  
+
+For example `myproject1` has also environment `int` available because defined in parent.
 
 When calling
 

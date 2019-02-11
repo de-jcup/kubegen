@@ -58,6 +58,9 @@ public class Main {
 		}
 		switch (cmd) {
 		case "build":
+			if ("values".equals(buildCommand.projectName)) {
+				throw new IllegalArgumentException("values is reserved word and so not a valid project name!");
+			}
 			File rootFolder = new File(buildCommand.projectHomeFolder);
 			ProjectImporter importer = new ProjectImporter();
 			Project projectToBuild = importer.importProject(rootFolder, buildCommand.projectName);

@@ -6,6 +6,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +39,7 @@ public class ScaffoldGeneratorTest {
 		
 		assertEquals("name1", project2.getName());
 		
-		List<String> environments = project2.getEnvironments();
+		Set<String> environments = project2.getEnvironments();
 		assertTrue(environments.contains("prod"));
 		assertTrue(environments.contains("int"));
 		assertTrue(environments.contains("dev"));

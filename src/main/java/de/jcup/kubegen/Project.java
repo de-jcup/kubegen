@@ -1,9 +1,7 @@
 package de.jcup.kubegen;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -18,7 +16,7 @@ public class Project {
 
 	private File projectFolder;
 	private String name;
-	private List<String> environments = new ArrayList<>();
+	private Set<String> environments = new TreeSet<>();
 	private Map<String, Map<String, String>> map = new TreeMap<>();
 
 	public Project(File rootFolder, String name) {
@@ -30,7 +28,7 @@ public class Project {
 		return name;
 	}
 
-	public List<String> getEnvironments() {
+	public Set<String> getEnvironments() {
 		return environments;
 	}
 
@@ -44,6 +42,10 @@ public class Project {
 
 	public File getValuesFolder() {
 		return new File(projectFolder, "values");
+	}
+	
+	public File getRootValuesFolder() {
+		return new File(projectFolder.getParentFile(), "values");
 	}
 
 	public File getValuesFile() {
@@ -64,7 +66,7 @@ public class Project {
 		}
 		Map<String, String> envMap = map.computeIfAbsent(environment, e -> new HashMap<>());
 		String result = envMap.get(key);
-		if (result == null && !key.isEmpty()) {
+		if (! environment.isEmpty() && result == null && !key.isEmpty()) {
 			/* fallback to common value when not defined */
 			return getValue("", key);
 		}

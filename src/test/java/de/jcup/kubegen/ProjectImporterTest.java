@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +18,8 @@ public class ProjectImporterTest {
 		importerToTest = new ProjectImporter();
 	}
 
+	
+	
 	@Test
 	public void import_test_root1_has_expected_name() throws Exception {
 		/* prepare */
@@ -39,10 +42,46 @@ public class ProjectImporterTest {
 		Project project = importerToTest.importProject(testroot1, "name1");
 
 		/* test */
-		List<String> environments = project.getEnvironments();
+		Set<String> environments = project.getEnvironments();
 		assertTrue(environments.contains("prod"));
 		assertTrue(environments.contains("int"));
 		assertTrue(environments.contains("dev"));
+		assertEquals(3, environments.size());
+
+	}
+	
+	@Test
+	public void import_test_root2_contains_merged_environments() throws Exception {
+		/* prepare */
+		File testroot1 = TestFileAccess.getTestResource("test-root2");
+
+		/* execute */
+		Project project = importerToTest.importProject(testroot1, "name1");
+
+		/* test */
+		Set<String> environments = project.getEnvironments();
+		assertTrue(environments.contains("prod"));
+		assertTrue(environments.contains("dev"));
+		assertEquals(2, environments.size());
+
+	}
+	
+	@Test
+	public void import_test_root3_contains_merged_environments_even_when_no_values_folder_in_project() throws Exception {
+		/* prepare */
+		File testroot1 = TestFileAccess.getTestResource("test-root3");
+
+		/* execute */
+		Project project = importerToTest.importProject(testroot1, "name1");
+
+		/* test */
+		Set<String> environments = project.getEnvironments();
+		assertTrue(environments.contains("prod"));
+		assertTrue(environments.contains("dev"));
+		assertEquals(2, environments.size());
+		assertEquals("value1", project.getValue("prod", "test.key"));
+		assertEquals("value1", project.getValue("dev", "test.key"));
+		assertEquals("prod", project.getValue("prod", "test.key.overridden"));
 
 	}
 
@@ -85,7 +124,7 @@ public class ProjectImporterTest {
 	}
 	
 	@Test
-	public void import_test_root1_values_common_imported_on_common_overriden() throws Exception {
+	public void import_test_root1_values_common_imported_on_common_overridden() throws Exception {
 		/* prepare */
 		File testroot1 = TestFileAccess.getTestResource("test-root1");
 
@@ -93,11 +132,11 @@ public class ProjectImporterTest {
 		Project project = importerToTest.importProject(testroot1, "name1");
 
 		/* test */
-		assertEquals("common", project.getValue("test.key.overriden"));
+		assertEquals("common", project.getValue("test.key.overridden"));
 	}
 	
 	@Test
-	public void import_test_root1_values_common_imported_on_prod_overriden() throws Exception {
+	public void import_test_root1_values_common_imported_on_prod_overridden() throws Exception {
 		/* prepare */
 		File testroot1 = TestFileAccess.getTestResource("test-root1");
 
@@ -105,11 +144,11 @@ public class ProjectImporterTest {
 		Project project = importerToTest.importProject(testroot1, "name1");
 
 		/* test */
-		assertEquals("prod", project.getValue("prod", "test.key.overriden"));
+		assertEquals("prod", project.getValue("prod", "test.key.overridden"));
 	}
 	
 	@Test
-	public void import_test_root1_values_common_imported_on_dev_overriden() throws Exception {
+	public void import_test_root1_values_common_imported_on_dev_overridden() throws Exception {
 		/* prepare */
 		File testroot1 = TestFileAccess.getTestResource("test-root1");
 
@@ -117,7 +156,68 @@ public class ProjectImporterTest {
 		Project project = importerToTest.importProject(testroot1, "name1");
 
 		/* test */
-		assertEquals("common", project.getValue("dev", "test.key.overriden"));
+		assertEquals("common", project.getValue("dev", "test.key.overridden"));
 	}
+	
+	@Test
+	public void import_test_root1_rootvalues_common_imported_on_dev() throws Exception {
+		/* prepare */
+		File testroot1 = TestFileAccess.getTestResource("test-root1");
+		
+		/* execute */
+		Project project = importerToTest.importProject(testroot1, "name1");
+		
+		/* test */
+		assertEquals("valueRoot", project.getValue("dev", "test.key.from.root"));
+	}
+	@Test
+	public void import_test_root1_rootvalues_common_imported_on_dev_overridden_is_shared() throws Exception {
+		/* prepare */
+		File testroot1 = TestFileAccess.getTestResource("test-root1");
+		
+		/* execute */
+		Project project = importerToTest.importProject(testroot1, "name1");
+		
+		/* test */
+		assertEquals("commonRoot", project.getValue("dev", "test.key.from.root.overridden"));
+	}
+	@Test
+	public void import_test_root1_rootvalues_common_imported_on_prod_overridden_is_overridden() throws Exception {
+		/* prepare */
+		File testroot1 = TestFileAccess.getTestResource("test-root1");
+
+		/* execute */
+		Project project = importerToTest.importProject(testroot1, "name1");
+
+		/* test */
+		assertEquals("prodRoot", project.getValue("prod", "test.key.from.root.overridden"));
+	}
+	
+	@Test
+	public void import_test_root1_rootvalues_common_imported_on_int_overridden_is_overridden_from_project() throws Exception {
+		/* prepare */
+		File testroot1 = TestFileAccess.getTestResource("test-root1");
+
+		/* execute */
+		Project project = importerToTest.importProject(testroot1, "name1");
+
+		/* test */
+		assertEquals("intProject", project.getValue("int", "test.key.from.root.overridden.inproject"));
+	}
+	
+	@Test
+	public void import_test_root1_rootvalues_common_imported_on_prod_overridden_is_not_overridden_from_project() throws Exception {
+		/* prepare */
+		File testroot1 = TestFileAccess.getTestResource("test-root1");
+
+		/* execute */
+		Project project = importerToTest.importProject(testroot1, "name1");
+
+		/* test */
+		assertEquals("commonRootNotProject", project.getValue("prod", "test.key.from.root.overridden.inproject"));
+	}
+	
+	
+	
 
 }
