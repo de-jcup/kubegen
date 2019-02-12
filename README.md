@@ -1,5 +1,7 @@
-README kubegen
-==============
+[![Build status:](https://travis-ci.org/de-jcup/kubegen.svg?branch=master)](https://travis-ci.org/de-jcup/kubegen)
+
+
+# kubegen
 
 `kubegen` stands for **kubernetes file generator**
 
