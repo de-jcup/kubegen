@@ -17,6 +17,9 @@ public class BuildCommand {
 	@Parameter(names = {"-e","--environment"}, description = "Environment, e.g. dev|int|prod", required = true)
 	public String environment;
 	
+	@Parameter(names = {"-n","--namespaceKey"}, description = "Key for namespace resolution. Generated scripts will use this to target namespace. If none defined KUBEGEN_NAMESPACE_NAME wille be used", required = false)
+	public String namespaceKey = "KUBEGEN_NAMESPACE_NAME";
+	
 
 	@Parameter(names = {"-s","--sourceFolder"}, description = "Base source folder to search for projects. If not defined current dir will be used", required = false)
 	public String projectHomeFolder = new File(".").getAbsolutePath();

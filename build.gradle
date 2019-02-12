@@ -41,9 +41,12 @@ dependencies {
     // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
     // 'test.useTestNG()' to your build script.
     testCompile 'junit:junit:4.12'
+	testCompile group: 'org.mockito', name: 'mockito-all', version: '1.8.4'
     
     // https://mvnrepository.com/artifact/com.beust/jcommander
 	compile group: 'com.beust', name: 'jcommander', version: '1.72'
+	
+
 }
 
 

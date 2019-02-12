@@ -45,7 +45,7 @@ For example `myproject1` has also environment `int` available because defined in
 When calling
 
 ```bash
-kubegen build -p myproject -e=prod -i=1.0.0
+kubegen build -p myproject -e=prod -i=1.0.0 -n=KEY_TO_DEFINE_NAMESPACE
 ```
 we got 
 
@@ -64,7 +64,7 @@ myproject
         install.sh
 ```
 
-All keys defined in templates (GO template style) e.g. `{{ .MY_VALUE }}` will be replaced by correspondig values.
+All keys defined in templates (GO template style) e.g. `{{ .MY_VALUE }}` will be replaced by corresponding values.
 
 value.properties will be overriden by environment specific one.
 

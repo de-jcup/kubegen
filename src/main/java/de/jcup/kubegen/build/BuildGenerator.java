@@ -34,7 +34,7 @@ public class BuildGenerator {
 		
 		/* go back...*/
 		c.targetFolder=targetFolder;
-		DeploymentBashFileGenerator dbgen = new DeploymentBashFileGenerator();
+		InstallBashFileGenerator dbgen = new InstallBashFileGenerator(build.namespaceKey);
 		dbgen.generate(c);
 	}
 
