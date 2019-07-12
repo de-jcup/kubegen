@@ -63,7 +63,7 @@ data will be merged but project does override.
 ## System property override
 When you call the jar with a system property starting with `kubegen.`you can set custom values from command line and also override fix defined values.
 
-For example setting `-Dkubegen.test.vaue1=mypropvalue` you will have `{{ .TEST_VALUE1 }}` available in templates
+For example setting `-Dkubegen.TEST_VALUE1=mypropvalue` you will have `{{ .TEST_VALUE1 }}` available in templates
 
 ## Example
 For example `myproject1` has also environment `int` available because defined in parent.
