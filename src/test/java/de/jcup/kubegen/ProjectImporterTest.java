@@ -3,7 +3,6 @@ package de.jcup.kubegen;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.util.List;
 import java.util.Set;
 
 import org.junit.Before;
@@ -16,9 +15,52 @@ public class ProjectImporterTest {
 	@Before
 	public void before() {
 		importerToTest = new ProjectImporter();
+		System.clearProperty("kubegen.newvalue.test");
+		System.clearProperty("kubegen.test.key.overridden");
 	}
 
+	@Test
+    public void import_test_root1_has_expected_name_override_with_system_property() throws Exception {
+        /* prepare */
+	    System.setProperty("kubegen.newvalue.test", "name-from-system-property");
+        File testroot1 = TestFileAccess.getTestResource("test-root1");
+
+        /* execute */
+        Project project = importerToTest.importProject(testroot1, "name1");
+
+        /* test */
+        assertEquals("name-from-system-property", project.getValue("newvalue.test"));
+        assertEquals("name-from-system-property", project.getValue("prod", "newvalue.test"));
+
+    }
 	
+	@Test
+    public void import_test_root1_has_expected_name_override_with_system_property__overrides_existing_common() throws Exception {
+        /* prepare */
+        System.setProperty("kubegen.test.key.overridden", "common-but-by-property");
+        File testroot1 = TestFileAccess.getTestResource("test-root1");
+
+        /* execute */
+        Project project = importerToTest.importProject(testroot1, "name1");
+
+        /* test */
+        assertEquals("common-but-by-property", project.getValue("test.key.overridden"));
+
+    }
+	
+	@Test
+    public void import_test_root1_has_expected_name_override_with_system_property__overrides_existing_prod() throws Exception {
+        /* prepare */
+        System.setProperty("kubegen.test.key.overridden", "common-but-by-property");
+        File testroot1 = TestFileAccess.getTestResource("test-root1");
+
+        /* execute */
+        Project project = importerToTest.importProject(testroot1, "name1");
+
+        /* test */
+        assertEquals("common-but-by-property", project.getValue("prod", "test.key.overridden"));
+
+    }
 	
 	@Test
 	public void import_test_root1_has_expected_name() throws Exception {

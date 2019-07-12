@@ -7,12 +7,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class Project {
-
-	private static final Logger LOG = LoggerFactory.getLogger(Project.class);
 
 	private File projectFolder;
 	private String name;

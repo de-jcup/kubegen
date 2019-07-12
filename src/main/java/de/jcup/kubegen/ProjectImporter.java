@@ -8,17 +8,55 @@ import java.util.Properties;
 
 public class ProjectImporter {
 
-	public Project importProject(File rootFolder, String name) throws IOException {
+	private static final String SYSTEM_PROPERTY_PREFIX = "kubegen.";
+
+    public Project importProject(File rootFolder, String name) throws IOException {
 		Project project = new Project(rootFolder, name);
 		if (!project.getProjectFolder().exists()) {
 			throw new FileNotFoundException("Did not found:" + project.getProjectFolder().getAbsolutePath());
 		}
 		appendValueFiles(project, getValueFilesFromRoot(project));
 		appendValueFiles(project, getValueFilesFromProject(project));
+		/* at the end add systemp properties - so override */
+		appendSystemProperties(project);
+		
 		return project;
 	}
 
-	private void appendValueFiles(Project project, File[] valueFiles) throws IOException {
+	private void appendSystemProperties(Project project) {
+        Properties properties = System.getProperties();
+        for (Object key: properties.keySet()) {
+            if (! (key instanceof String)) {
+                continue;
+            }
+            String keyString = key.toString();
+            if (!keyString.startsWith(SYSTEM_PROPERTY_PREFIX)){
+                continue;
+            }
+            int length = SYSTEM_PROPERTY_PREFIX.length();
+            if (keyString.length()<length+1) {
+                continue;
+            }
+            Object value = properties.get(keyString);
+            if (! (value instanceof String)) {
+                continue;
+            }
+            String targetKey = keyString.substring(length);
+            String valueString = value.toString();
+            
+            project.putValue(targetKey, valueString);
+            for (String environment: project.getEnvironments()) {
+                String originValue = project.getValue(environment, targetKey);
+                if (originValue!=null && ! valueString.equals(originValue)) {
+                    /* self defined, so override */
+                    project.putValue(environment, targetKey, valueString);
+                }
+            }
+        }
+        
+    }
+
+    private void appendValueFiles(Project project, File[] valueFiles) throws IOException {
 		for (File file : valueFiles) {
 			String fileName = file.getName();
 			if (fileName.equals("values.properties")) {
