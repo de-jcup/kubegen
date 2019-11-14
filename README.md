@@ -65,6 +65,10 @@ When you call the jar with a system property starting with `kubegen.`you can set
 
 For example setting `-Dkubegen.TEST_VALUE1=mypropvalue` you will have `{{ .TEST_VALUE1 }}` available in templates
 
+## System environment entry override
+Same as for system property override: KUBEGEN_TEST_VALUE1 will be mapped in template to `{{ .TEST_VALUE1 }}`.
+But system properties are superior to environment entries!
+
 ## Example
 For example `myproject1` has also environment `int` available because defined in parent.
 

@@ -89,8 +89,10 @@ tasks.eclipse.dependsOn << {
 }
 
 task make(type: Jar) {
+    description 'This creates a fat jar, containing all libraries. Version of kubegen is not in filename but inside manifest.'
     manifest {
         attributes 'Main-Class': 'de.jcup.kubegen.Main'
+        attributes 'Kubegen-Version': '0.3.0'
     }
     baseName = 'kubegen-all'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
