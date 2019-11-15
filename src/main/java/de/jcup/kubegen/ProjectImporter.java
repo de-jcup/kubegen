@@ -82,7 +82,7 @@ public class ProjectImporter {
         
         @Override
         public String convertKeyImpl(String key) {
-            return key.replace('_', '.').toLowerCase();
+            return key;
         }
 
     }

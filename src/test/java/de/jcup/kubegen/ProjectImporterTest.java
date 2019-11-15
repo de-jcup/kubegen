@@ -13,20 +13,90 @@ import org.junit.Test;
 
 public class ProjectImporterTest {
 
-	private ProjectImporter importerToTest;
+	private static final String PROP_KUBEGEN_SOME_OTHER_VALUE = "kubegen.SOME_OTHER_VALUE";
+    private static final String ENVI_KUBEGEN_VALUE1 = "KUBEGEN_VALUE1";
+    private static final String PROP_KUBEGEN_VALUE1 = "kubegen.VALUE1";
+    
+    private static final String KUBEGEN_TEST_KEY_OVERRIDDEN = "kubegen.test.key.overridden";
+    private static final String KUBEGEN_NEWVALUE_TEST = "kubegen.newvalue.test";
+    private ProjectImporter importerToTest;
     private MapDataProvider mockedEntryProvider;
 
 	@Before
 	public void before() {
-	    System.clearProperty("kubegen.newvalue.test");
-	    System.clearProperty("kubegen.test.key.overridden");
-
+	    System.clearProperty(KUBEGEN_NEWVALUE_TEST);
+	    System.clearProperty(KUBEGEN_TEST_KEY_OVERRIDDEN);
+	    System.clearProperty(PROP_KUBEGEN_VALUE1);
+	    System.clearProperty(PROP_KUBEGEN_SOME_OTHER_VALUE);
+	    
 	    importerToTest = new ProjectImporter();
 	    
 	    mockedEntryProvider = mock(MapDataProvider.class);
 	    importerToTest.environmentEntryMapDataProvider=mockedEntryProvider;
 
 	}
+	
+
+    @Test
+    public void import_root_4_with_property_set() throws Exception {
+        /* prepare */
+        System.setProperty(PROP_KUBEGEN_VALUE1, "changed-by-property");
+        File testroot1 = TestFileAccess.getTestResource("test-root4");
+
+        /* execute */
+        Project project = importerToTest.importProject(testroot1, "name1");
+
+        /* test */
+        assertEquals("changed-by-property", project.getValue("VALUE1"));
+
+    }
+    
+    @Test
+    public void import_root_4_with_env_set() throws Exception {
+        /* prepare */
+        Map<Object, Object> createSingleMap = createSingleMap(ENVI_KUBEGEN_VALUE1,"changed-by-env");
+        when(mockedEntryProvider.getMap()).thenReturn(createSingleMap);
+      
+        File testroot1 = TestFileAccess.getTestResource("test-root4");
+
+        /* execute */
+        Project project = importerToTest.importProject(testroot1, "name1");
+
+        /* test */
+        assertEquals("changed-by-env", project.getValue("VALUE1"));
+
+    }
+    
+    @Test
+    public void import_root_4_with_env_set_some_other_PROP_value_available_even_when_not_in_template() throws Exception {
+        /* prepare */
+        System.setProperty(PROP_KUBEGEN_SOME_OTHER_VALUE, "changed-by-property");
+      
+        File testroot1 = TestFileAccess.getTestResource("test-root4");
+
+        /* execute */
+        Project project = importerToTest.importProject(testroot1, "name1");
+
+        /* test */
+        assertEquals("changed-by-property", project.getValue("SOME_OTHER_VALUE"));
+
+    }
+    
+    @Test
+    public void import_root_4_with_env_set_some_other_ENV_value_available_even_when_not_in_template() throws Exception {
+        /* prepare */
+        Map<Object, Object> createSingleMap = createSingleMap("KUBEGEN_SOME_OTHER_VALUE","changed-by-env");
+        when(mockedEntryProvider.getMap()).thenReturn(createSingleMap);
+      
+        File testroot1 = TestFileAccess.getTestResource("test-root4");
+
+        /* execute */
+        Project project = importerToTest.importProject(testroot1, "name1");
+
+        /* test */
+        assertEquals("changed-by-env", project.getValue("SOME_OTHER_VALUE"));
+
+    }
 	
 	@Test
 	public void an_new_created_importer_has_got_a_system_environment_entry_provider() {
@@ -39,7 +109,7 @@ public class ProjectImporterTest {
 	@Test
     public void import_test_root1_has_expected_name_from_with_system_property() throws Exception {
         /* prepare */
-	    System.setProperty("kubegen.newvalue.test", "name-from-system-property");
+	    System.setProperty(KUBEGEN_NEWVALUE_TEST, "name-from-system-property");
         File testroot1 = TestFileAccess.getTestResource("test-root1");
 
         /* execute */
@@ -54,7 +124,7 @@ public class ProjectImporterTest {
 	@Test
     public void import_test_root1_has_expected_name_override_with_ENV_entry() throws Exception {
         /* prepare */
-	    Map<Object, Object> createSingleMap = createSingleMap("KUBEGEN_NEWVALUE_TEST","name-from-system-env");
+	    Map<Object, Object> createSingleMap = createSingleMap("KUBEGEN_newvalue.test","name-from-system-env");
         when(mockedEntryProvider.getMap()).thenReturn(createSingleMap);
 	    
         File testroot1 = TestFileAccess.getTestResource("test-root1");
@@ -71,7 +141,7 @@ public class ProjectImporterTest {
 	@Test
     public void import_test_root1_has_expected_name_fromwith_SysetmProperty_not_ENV_entry_when_both_exist() throws Exception {
         /* prepare */
-	    System.setProperty("kubegen.newvalue.test", "name-from-system-property");
+	    System.setProperty(KUBEGEN_NEWVALUE_TEST, "name-from-system-property");
 	    Map<Object, Object> createSingleMap = createSingleMap("KUBEGEN_NEWVALUE_TEST","name-from-system-env");
         when(mockedEntryProvider.getMap()).thenReturn(createSingleMap);
         
@@ -89,7 +159,7 @@ public class ProjectImporterTest {
 	@Test
     public void import_test_root1_has_expected_name_override_with_system_property__overrides_existing_common() throws Exception {
         /* prepare */
-        System.setProperty("kubegen.test.key.overridden", "common-but-by-property");
+        System.setProperty(KUBEGEN_TEST_KEY_OVERRIDDEN, "common-but-by-property");
         File testroot1 = TestFileAccess.getTestResource("test-root1");
 
         /* execute */
@@ -104,7 +174,7 @@ public class ProjectImporterTest {
     public void import_test_root1_has_expected_name_override_with_env_entry__overrides_existing_common() throws Exception {
         /* prepare */
 	    
-	    Map<Object, Object> createSingleMap = createSingleMap("KUBEGEN_TEST_KEY_OVERRIDDEN","common-but-by-env");
+	    Map<Object, Object> createSingleMap = createSingleMap("KUBEGEN_test.key.overridden","common-but-by-env");
         when(mockedEntryProvider.getMap()).thenReturn(createSingleMap);
 	      
         File testroot1 = TestFileAccess.getTestResource("test-root1");
@@ -129,7 +199,7 @@ public class ProjectImporterTest {
 	@Test
     public void import_test_root1_has_expected_name_override_with_system_property__overrides_existing_prod() throws Exception {
         /* prepare */
-        System.setProperty("kubegen.test.key.overridden", "common-but-by-property");
+        System.setProperty(KUBEGEN_TEST_KEY_OVERRIDDEN, "common-but-by-property");
         File testroot1 = TestFileAccess.getTestResource("test-root1");
 
         /* execute */
@@ -169,6 +239,7 @@ public class ProjectImporterTest {
 		assertEquals(3, environments.size());
 
 	}
+	
 	
 	@Test
 	public void import_test_root2_contains_merged_environments() throws Exception {
