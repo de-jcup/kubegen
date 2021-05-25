@@ -10,8 +10,10 @@ public class InstallBashFileGeneratorTest {
 	}
 
 	@Test(expected=IllegalArgumentException.class)
-	public void empty_key_defined_throws_exception_on_construction() {
-		new InstallBashFileGenerator("");
+	public void empty_namespace_defined_throws_exception_on_construction() {
+		BuildCommand data = new BuildCommand();
+		data.k8sNamespace="";
+        new InstallBashFileGenerator(data);
 	}
 	
 
