@@ -28,7 +28,10 @@ public class InstallBashFileGenerator {
     public void generate(GenerationContext context) throws IOException {
 
         Project project = context.project;
-        
+        if (project == null) {
+            throw new IllegalStateException("Project not defined");
+        }
+
         String kubeConfigValue = project.getValue(context.environment, build.k8sConfigFileName);
         String contextValue = project.getValue(context.environment, build.k8sContext);
         String namespaceValue = project.getValue(context.environment, build.k8sNamespace);
