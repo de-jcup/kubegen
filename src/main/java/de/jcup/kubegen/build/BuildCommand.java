@@ -17,10 +17,15 @@ public class BuildCommand {
 	@Parameter(names = {"-e","--environment"}, description = "Environment, e.g. dev|int|prod", required = true)
 	public String environment;
 	
-	@Parameter(names = {"-n","--namespaceKey"}, description = "Key for namespace resolution. Generated scripts will use this to target namespace. If none defined KUBEGEN_NAMESPACE_NAME wille be used", required = false)
-	public String namespaceKey = "KUBEGEN_NAMESPACE_NAME";
+	@Parameter(names = {"-n","--namespaceKey"}, description = "Key containing Kubernetes namespace to use. Generated scripts will use this as target namespace. If none defined KUBEGEN_NAMESPACE_NAME will be used", required = false)
+	public String k8sNamespace = "KUBEGEN_NAMESPACE_NAME";
 	
-
+	@Parameter(names = {"-c","--contextKey"}, description = "Key containing Kubernetes context to use. Generated scripts will make use of this. If none defined KUBEGEN_CONTEXT_NAME will be used", required = false)
+	public String k8sContext = "KUBEGEN_CONTEXT_NAME";
+	
+    @Parameter(names = {"-k","--kubeconfigKey"}, description = "Key containing Kubernetes config file to use. Generated scripts will make use of this. If none defined KUBEGEN_KUBECONFIG_FILE will be used", required = false)
+    public String k8sConfigFileName = "KUBEGEN_KUBECONFIG_FILE";
+    
 	@Parameter(names = {"-s","--sourceFolder"}, description = "Base source folder to search for projects. If not defined current dir will be used", required = false)
 	public String projectHomeFolder = new File(".").getAbsolutePath();
 	
