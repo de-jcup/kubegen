@@ -1,4 +1,4 @@
-[![Build status:](https://travis-ci.org/de-jcup/kubegen.svg?branch=master)](https://travis-ci.org/de-jcup/kubegen)
+[![Java CI with Gradle](https://github.com/de-jcup/kubegen/actions/workflows/gradle.yml/badge.svg)](https://github.com/de-jcup/kubegen/actions/workflows/gradle.yml)
 
 # kubegen
 
