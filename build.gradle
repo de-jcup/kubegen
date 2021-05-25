@@ -91,10 +91,17 @@ tasks.eclipse.dependsOn << {
 task make(type: Jar) {
     group 'KubeGen'
     description 'This creates a fat jar, containing all libraries. Version of kubegen is not in filename but inside manifest.'
+    
     manifest {
         attributes 'Main-Class': 'de.jcup.kubegen.Main'
     }
+    
     baseName = 'kubegen-all'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    
+    from("$projectDir/LICENSE")
+    from("$projectDir/3RD_PARTY_LICENSES.txt")
+    
+    from { 
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }} 
     with jar
 }

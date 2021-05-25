@@ -1,0 +1,9 @@
+Used libraries:
+
+JCommander- License Apache 2.0
+https://github.com/cbeust/jcommander
+
+SLF4J - MIT
+https://github.com/qos-ch/slf4j/blob/master/LICENSE.txt
+https://github.com/qos-ch/slf4j
+
