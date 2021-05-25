@@ -50,10 +50,64 @@ java -jar kubegen-all.jar <command> <options> <systemproperties>
 ```
 
 **There are following options:**
--p = project name
--i = image name, will be available in templates by `{{ .KUBEGEN_IMAGE_VERSION}}`
--n = namespace to use, will be available in templates by `{{ .NAMESPACE_NAME}}`
--e = environment to use
+
+```
+Usage: kubegen [options] [command] [command options]
+  Options:
+    --help
+      Shows this help
+    --imageVersion
+      Shows imageVersion of kubegen
+    --verbose
+      Shows verbose output
+      Default: false
+  Commands:
+    build      Build environment specific kubernetes files and create 
+            install.sh script for execution
+      Usage: build [options]
+        Options:
+          -c, --contextKey
+            Key containing Kubernetes context to use. Generated scripts will 
+            make use of this. If none defined KUBEGEN_CONTEXT_NAME will be 
+            used 
+            Default: KUBEGEN_CONTEXT_NAME
+        * -e, --environment
+            Environment, e.g. dev|int|prod
+        * -i, --imageVersion
+            Docker image imageVersion. Will be accessible as variable 
+            `KUBEGEN_IMAGE_VERSION` 
+          -k, --kubeconfigKey
+            Key containing Kubernetes config file to use. Generated scripts 
+            will make use of this. If none defined KUBEGEN_KUBECONFIG_FILE 
+            will be used
+            Default: KUBEGEN_KUBECONFIG_FILE
+          -n, --namespaceKey
+            Key containing Kubernetes namespace to use. Generated scripts will 
+            use this as target namespace. If none defined 
+            KUBEGEN_NAMESPACE_NAME will be used
+            Default: KUBEGEN_NAMESPACE_NAME
+        * -p, --project
+            Project name
+          -s, --sourceFolder
+            Base source folder to search for projects. If not defined current 
+            dir will be used
+            Default: /home/albert/develop/projects/jcup/kubegen/.
+          -t, --targetFolder
+            Target output folder. If not defined, $projectFolder/buildCommand 
+            will be used
+
+    scaffold      Creates a scaffolding for a new project in current directory
+      Usage: scaffold [options]
+        Options:
+        * -e, --environments
+            Environments, e.g. dev|int|prod
+        * -p, --project
+            Project name
+
+```
+### Shell script generation
+`install.sh` will be generated and contains ready to go install scripts with automated context change etc. dependening on the used CLI options.
+
 
 ## Environments
 Environments are automatically resolved by inspected value_$xxx.properties. Folder `values` - if existing -  in project parent folder is provided to
