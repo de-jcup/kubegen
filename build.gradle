@@ -24,9 +24,9 @@ apply plugin: 'java'
 
 // In this section you declare where to find the dependencies of your project
 repositories {
-    // Use 'jcenter' for resolving your dependencies.
+    // Use 'mavenCentral' for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
-    jcenter()
+    mavenCentral()
 }
 
 
@@ -89,6 +89,7 @@ tasks.eclipse.dependsOn << {
 }
 
 task make(type: Jar) {
+    group 'KubeGen'
     description 'This creates a fat jar, containing all libraries. Version of kubegen is not in filename but inside manifest.'
     manifest {
         attributes 'Main-Class': 'de.jcup.kubegen.Main'
