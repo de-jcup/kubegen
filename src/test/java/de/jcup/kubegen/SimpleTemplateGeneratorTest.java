@@ -80,6 +80,8 @@ public class SimpleTemplateGeneratorTest {
         c.project = new Project(new File("."), "testproject");
         c.project.putValue("test_pwd", "bla:bla[$bla");
 
+        generatorToTest.enableDebugOutput();
+
         /* execute */
         String replaced = generatorToTest.replacePlaceHolders("We use {{ .test_pwd }}", c);
 
