@@ -1,0 +1,3 @@
+smtp:
+  user: myuser
+  password: {{ .SMTP_PASSWORD }}
