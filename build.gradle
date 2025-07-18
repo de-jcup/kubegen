@@ -87,7 +87,7 @@ tasks.eclipse.dependsOn << {
 	}
 }
 
-task make(type: Jar) {
+task distribution(type: Jar) {
     group 'KubeGen'
     description 'This creates a fat jar, containing all libraries. Version of kubegen is not in filename but inside manifest.'
     

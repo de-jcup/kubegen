@@ -21,7 +21,13 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+        
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew build distribution
+    
+    - name: Upload JAR as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: kubegen-all
+        path: build/libs/kubegen-all.jar
+        retention-days: 7

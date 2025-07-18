@@ -157,3 +157,10 @@ For more details call
 ```bash
 java -jar kubegen-all.jar --help
 ```
+
+## How to build locally a distribution
+```
+./gradlew build distribution
+```
+
+Afterwards inside `build/lib/` the file `kubegen-all.jar` is available.
