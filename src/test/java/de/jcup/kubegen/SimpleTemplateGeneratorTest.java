@@ -1,27 +1,23 @@
 package de.jcup.kubegen;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class SimpleTemplateGeneratorTest {
 	private SimpleTemplateGenerator generatorToTest;
 	
-	@Rule
-	public ExpectedException expected = ExpectedException.none();
-
-	@Before
-	public void before() {
+	@BeforeEach
+	void before() {
 		generatorToTest = new SimpleTemplateGenerator();
 	}
 
 	@Test
-	public void replacement_smurf_gargamel_works() {
+	void replacement_smurf_gargamel_works() {
 		/* prepare */
 		GenerationContext c = new GenerationContext();
 		c.project = new Project(new File("."), "testproject");
@@ -35,7 +31,7 @@ public class SimpleTemplateGeneratorTest {
 	}
 	
 	@Test
-	public void replacement_smurf_smurfette_gargamel_rotznase_works() {
+	void replacement_smurf_smurfette_gargamel_rotznase_works() {
 		/* prepare */
 		GenerationContext c = new GenerationContext();
 		c.project = new Project(new File("."), "testproject");
@@ -50,7 +46,7 @@ public class SimpleTemplateGeneratorTest {
 	}
 	
 	@Test
-	public void replacement_smurf_smurfette_rotznase_works() {
+	void replacement_smurf_smurfette_rotznase_works() {
 		/* prepare */
 		GenerationContext c = new GenerationContext();
 		c.project = new Project(new File("."), "testproject");
@@ -65,7 +61,7 @@ public class SimpleTemplateGeneratorTest {
 	}
 	
 	@Test
-	public void replacement_impossible_throws_missing_key_exception() {
+	void replacement_impossible_throws_missing_key_exception() {
 		/* prepare */
 		GenerationContext c = new GenerationContext();
 		c.project = new Project(new File("."), "testproject");
@@ -73,11 +69,24 @@ public class SimpleTemplateGeneratorTest {
 		c.project.putValue("SMURFETTE", "Rotznase");
 
 		/* prepare test */
-		expected.expect(MissingKeyException.class);
-		
-		/* execute */
-		generatorToTest.replacePlaceHolders("This is {{ .SMURFX }}", c);
+		assertThrows(MissingKeyException.class, ()->generatorToTest.replacePlaceHolders("This is {{ .SMURFX }}", c));
 
 	}
+	
+	@Test
+    void bugfix_issue_13_illegal_group_reference() {
+        /* prepare */
+        GenerationContext c = new GenerationContext();
+        c.project = new Project(new File("."), "testproject");
+        c.project.putValue("test_pwd", "bla:bla[$bla");
+
+        generatorToTest.enableDebugOutput();
+
+        /* execute */
+        String replaced = generatorToTest.replacePlaceHolders("We use {{ .test_pwd }}", c);
+
+        /* test */
+        assertEquals("We use bla:bla[$bla", replaced);
+    }
 
 }

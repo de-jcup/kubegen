@@ -1,13 +1,14 @@
 package de.jcup.kubegen;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SystemEnvironmentEntryProviderTest {
 
     @Test
-    public void path_variable_from_environment_is_same_as_from_provider() {
+    void path_variable_from_environment_is_same_as_from_provider() {
        String fromEnv = System.getenv("PATH");
        assertNotNull(fromEnv);
        

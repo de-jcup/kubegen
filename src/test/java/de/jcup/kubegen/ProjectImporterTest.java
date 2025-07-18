@@ -1,15 +1,18 @@
 package de.jcup.kubegen;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ProjectImporterTest {
 
@@ -22,8 +25,8 @@ public class ProjectImporterTest {
     private ProjectImporter importerToTest;
     private MapDataProvider mockedEntryProvider;
 
-	@Before
-	public void before() {
+	@BeforeEach
+	void before() {
 	    System.clearProperty(KUBEGEN_NEWVALUE_TEST);
 	    System.clearProperty(KUBEGEN_TEST_KEY_OVERRIDDEN);
 	    System.clearProperty(PROP_KUBEGEN_VALUE1);
@@ -38,7 +41,7 @@ public class ProjectImporterTest {
 	
 
     @Test
-    public void import_root_4_with_property_set() throws Exception {
+    void import_root_4_with_property_set() throws Exception {
         /* prepare */
         System.setProperty(PROP_KUBEGEN_VALUE1, "changed-by-property");
         File testroot1 = TestFileAccess.getTestResource("test-root4");
@@ -52,7 +55,7 @@ public class ProjectImporterTest {
     }
     
     @Test
-    public void import_root_4_with_env_set() throws Exception {
+    void import_root_4_with_env_set() throws Exception {
         /* prepare */
         Map<Object, Object> createSingleMap = createSingleMap(ENVI_KUBEGEN_VALUE1,"changed-by-env");
         when(mockedEntryProvider.getMap()).thenReturn(createSingleMap);
@@ -68,7 +71,7 @@ public class ProjectImporterTest {
     }
     
     @Test
-    public void import_root_4_with_env_set_some_other_PROP_value_available_even_when_not_in_template() throws Exception {
+    void import_root_4_with_env_set_some_other_PROP_value_available_even_when_not_in_template() throws Exception {
         /* prepare */
         System.setProperty(PROP_KUBEGEN_SOME_OTHER_VALUE, "changed-by-property");
       
@@ -83,7 +86,7 @@ public class ProjectImporterTest {
     }
     
     @Test
-    public void import_root_4_with_env_set_some_other_ENV_value_available_even_when_not_in_template() throws Exception {
+    void import_root_4_with_env_set_some_other_ENV_value_available_even_when_not_in_template() throws Exception {
         /* prepare */
         Map<Object, Object> createSingleMap = createSingleMap("KUBEGEN_SOME_OTHER_VALUE","changed-by-env");
         when(mockedEntryProvider.getMap()).thenReturn(createSingleMap);
@@ -99,7 +102,7 @@ public class ProjectImporterTest {
     }
 	
 	@Test
-	public void an_new_created_importer_has_got_a_system_environment_entry_provider() {
+	void an_new_created_importer_has_got_a_system_environment_entry_provider() {
 	    ProjectImporter blankImporter = new ProjectImporter();
 	    
 	    assertNotNull(blankImporter.environmentEntryMapDataProvider);
@@ -107,7 +110,7 @@ public class ProjectImporterTest {
 	}
 
 	@Test
-    public void import_test_root1_has_expected_name_from_with_system_property() throws Exception {
+    void import_test_root1_has_expected_name_from_with_system_property() throws Exception {
         /* prepare */
 	    System.setProperty(KUBEGEN_NEWVALUE_TEST, "name-from-system-property");
         File testroot1 = TestFileAccess.getTestResource("test-root1");
@@ -122,7 +125,7 @@ public class ProjectImporterTest {
     }
 	
 	@Test
-    public void import_test_root1_has_expected_name_override_with_ENV_entry() throws Exception {
+    void import_test_root1_has_expected_name_override_with_ENV_entry() throws Exception {
         /* prepare */
 	    Map<Object, Object> createSingleMap = createSingleMap("KUBEGEN_newvalue.test","name-from-system-env");
         when(mockedEntryProvider.getMap()).thenReturn(createSingleMap);
@@ -139,7 +142,7 @@ public class ProjectImporterTest {
     }
 	
 	@Test
-    public void import_test_root1_has_expected_name_fromwith_SysetmProperty_not_ENV_entry_when_both_exist() throws Exception {
+    void import_test_root1_has_expected_name_fromwith_SysetmProperty_not_ENV_entry_when_both_exist() throws Exception {
         /* prepare */
 	    System.setProperty(KUBEGEN_NEWVALUE_TEST, "name-from-system-property");
 	    Map<Object, Object> createSingleMap = createSingleMap("KUBEGEN_NEWVALUE_TEST","name-from-system-env");
@@ -157,7 +160,7 @@ public class ProjectImporterTest {
     }
 	
 	@Test
-    public void import_test_root1_has_expected_name_override_with_system_property__overrides_existing_common() throws Exception {
+    void import_test_root1_has_expected_name_override_with_system_property__overrides_existing_common() throws Exception {
         /* prepare */
         System.setProperty(KUBEGEN_TEST_KEY_OVERRIDDEN, "common-but-by-property");
         File testroot1 = TestFileAccess.getTestResource("test-root1");
@@ -171,7 +174,7 @@ public class ProjectImporterTest {
     }
 	
 	@Test
-    public void import_test_root1_has_expected_name_override_with_env_entry__overrides_existing_common() throws Exception {
+    void import_test_root1_has_expected_name_override_with_env_entry__overrides_existing_common() throws Exception {
         /* prepare */
 	    
 	    Map<Object, Object> createSingleMap = createSingleMap("KUBEGEN_test.key.overridden","common-but-by-env");
@@ -197,7 +200,7 @@ public class ProjectImporterTest {
 	
 	
 	@Test
-    public void import_test_root1_has_expected_name_override_with_system_property__overrides_existing_prod() throws Exception {
+    void import_test_root1_has_expected_name_override_with_system_property__overrides_existing_prod() throws Exception {
         /* prepare */
         System.setProperty(KUBEGEN_TEST_KEY_OVERRIDDEN, "common-but-by-property");
         File testroot1 = TestFileAccess.getTestResource("test-root1");
@@ -211,7 +214,7 @@ public class ProjectImporterTest {
     }
 	
 	@Test
-	public void import_test_root1_has_expected_name() throws Exception {
+	void import_test_root1_has_expected_name() throws Exception {
 		/* prepare */
 		File testroot1 = TestFileAccess.getTestResource("test-root1");
 
@@ -224,7 +227,7 @@ public class ProjectImporterTest {
 	}
 	
 	@Test
-	public void import_test_root1_contains_environments() throws Exception {
+	void import_test_root1_contains_environments() throws Exception {
 		/* prepare */
 		File testroot1 = TestFileAccess.getTestResource("test-root1");
 
@@ -242,7 +245,7 @@ public class ProjectImporterTest {
 	
 	
 	@Test
-	public void import_test_root2_contains_merged_environments() throws Exception {
+	void import_test_root2_contains_merged_environments() throws Exception {
 		/* prepare */
 		File testroot1 = TestFileAccess.getTestResource("test-root2");
 
@@ -258,7 +261,7 @@ public class ProjectImporterTest {
 	}
 	
 	@Test
-	public void import_test_root3_contains_merged_environments_even_when_no_values_folder_in_project() throws Exception {
+	void import_test_root3_contains_merged_environments_even_when_no_values_folder_in_project() throws Exception {
 		/* prepare */
 		File testroot1 = TestFileAccess.getTestResource("test-root3");
 
@@ -277,7 +280,7 @@ public class ProjectImporterTest {
 	}
 
 	@Test
-	public void import_test_root1_contains_templates() throws Exception {
+	void import_test_root1_contains_templates() throws Exception {
 		/* prepare */
 		File testroot1 = TestFileAccess.getTestResource("test-root1");
 
@@ -291,7 +294,7 @@ public class ProjectImporterTest {
 	}
 	
 	@Test
-	public void import_test_root1_values_common_imported_on_common() throws Exception {
+	void import_test_root1_values_common_imported_on_common() throws Exception {
 		/* prepare */
 		File testroot1 = TestFileAccess.getTestResource("test-root1");
 
@@ -303,7 +306,7 @@ public class ProjectImporterTest {
 	}
 	
 	@Test
-	public void import_test_root1_values_common_imported_on_prod() throws Exception {
+	void import_test_root1_values_common_imported_on_prod() throws Exception {
 		/* prepare */
 		File testroot1 = TestFileAccess.getTestResource("test-root1");
 
@@ -315,7 +318,7 @@ public class ProjectImporterTest {
 	}
 	
 	@Test
-	public void import_test_root1_values_common_imported_on_common_overridden() throws Exception {
+	void import_test_root1_values_common_imported_on_common_overridden() throws Exception {
 		/* prepare */
 		File testroot1 = TestFileAccess.getTestResource("test-root1");
 
@@ -327,7 +330,7 @@ public class ProjectImporterTest {
 	}
 	
 	@Test
-	public void import_test_root1_values_common_imported_on_prod_overridden() throws Exception {
+	void import_test_root1_values_common_imported_on_prod_overridden() throws Exception {
 		/* prepare */
 		File testroot1 = TestFileAccess.getTestResource("test-root1");
 
@@ -339,7 +342,7 @@ public class ProjectImporterTest {
 	}
 	
 	@Test
-	public void import_test_root1_values_common_imported_on_dev_overridden() throws Exception {
+	void import_test_root1_values_common_imported_on_dev_overridden() throws Exception {
 		/* prepare */
 		File testroot1 = TestFileAccess.getTestResource("test-root1");
 
@@ -351,7 +354,7 @@ public class ProjectImporterTest {
 	}
 	
 	@Test
-	public void import_test_root1_rootvalues_common_imported_on_dev() throws Exception {
+	void import_test_root1_rootvalues_common_imported_on_dev() throws Exception {
 		/* prepare */
 		File testroot1 = TestFileAccess.getTestResource("test-root1");
 		
@@ -362,7 +365,7 @@ public class ProjectImporterTest {
 		assertEquals("valueRoot", project.getValue("dev", "test.key.from.root"));
 	}
 	@Test
-	public void import_test_root1_rootvalues_common_imported_on_dev_overridden_is_shared() throws Exception {
+	void import_test_root1_rootvalues_common_imported_on_dev_overridden_is_shared() throws Exception {
 		/* prepare */
 		File testroot1 = TestFileAccess.getTestResource("test-root1");
 		
@@ -373,7 +376,7 @@ public class ProjectImporterTest {
 		assertEquals("commonRoot", project.getValue("dev", "test.key.from.root.overridden"));
 	}
 	@Test
-	public void import_test_root1_rootvalues_common_imported_on_prod_overridden_is_overridden() throws Exception {
+	void import_test_root1_rootvalues_common_imported_on_prod_overridden_is_overridden() throws Exception {
 		/* prepare */
 		File testroot1 = TestFileAccess.getTestResource("test-root1");
 
@@ -385,7 +388,7 @@ public class ProjectImporterTest {
 	}
 	
 	@Test
-	public void import_test_root1_rootvalues_common_imported_on_int_overridden_is_overridden_from_project() throws Exception {
+	void import_test_root1_rootvalues_common_imported_on_int_overridden_is_overridden_from_project() throws Exception {
 		/* prepare */
 		File testroot1 = TestFileAccess.getTestResource("test-root1");
 
@@ -397,7 +400,7 @@ public class ProjectImporterTest {
 	}
 	
 	@Test
-	public void import_test_root1_rootvalues_common_imported_on_prod_overridden_is_not_overridden_from_project() throws Exception {
+	void import_test_root1_rootvalues_common_imported_on_prod_overridden_is_not_overridden_from_project() throws Exception {
 		/* prepare */
 		File testroot1 = TestFileAccess.getTestResource("test-root1");
 
@@ -408,6 +411,18 @@ public class ProjectImporterTest {
 		assertEquals("commonRootNotProject", project.getValue("prod", "test.key.from.root.overridden.inproject"));
 	}
 	
+	@Test
+    void import_test_root5_can_be_imported() throws Exception {
+        /* prepare */
+        File testroot1 = TestFileAccess.getTestResource("test-root5");
+
+        /* execute */
+        Project project = importerToTest.importProject(testroot1, "name1");
+
+        /* test */
+        assertEquals("commonRootNotProject", project.getValue("prod", "test.key.from.root.overridden.inproject"));
+    }
+    
 	
 	
 
